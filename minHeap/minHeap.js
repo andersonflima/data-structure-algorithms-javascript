@@ -1,5 +1,5 @@
 var MinHeap = function () {
-  this.heap = [null];
+  this.heap = [];
 
   this.add = function (num) {
     this.heap.push(num);
@@ -66,6 +66,21 @@ var MinHeap = function () {
       result.push(this.remove());
     }
     return result;
+  };
+
+  this.heapify = function () {
+    for (let i = 1; i < this.heap.length; i++) {
+      if (this.heap[i] < this.heap[Math.floor(i / 2)]) {
+        [this.heap[i], this.heap[Math.floor(i / 2)]] = [
+          this.heap[Math.floor(i / 2)],
+          this.heap[i],
+        ];
+      }
+    }
+  };
+
+  this.print = function () {
+    return this.heap;
   };
 };
 
@@ -138,6 +153,102 @@ console.log("Heap before sorting:", minHeap.heap);
 const sortedArray = minHeap.sort();
 console.log("Sorted array:", sortedArray);
 // Expected Sorted Array: [2, 3, 4, 6, 7, 9, 12, 14]
+
+console.log("\n1. heapify with an empty array");
+minHeap.heapify([]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 2: heapify with a single-element array
+console.log("\n2. heapify with a single-element array");
+minHeap.heapify([10]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null, 10]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 3: heapify with an already min-heap array
+console.log("\n3. heapify with an already min-heap array");
+minHeap.heapify([10, 20, 30, 40, 50]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null, 10, 20, 30, 40, 50]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 4: heapify with a random unsorted array
+console.log("\n4. heapify with a random unsorted array");
+minHeap.heapify([50, 30, 20, 15, 5, 10, 25]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null, 5, 15, 10, 30, 50, 20, 25]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 5: heapify with duplicate elements
+console.log("\n5. heapify with duplicate elements");
+minHeap.heapify([20, 15, 20, 10, 10, 25, 25]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null, 10, 10, 20, 15, 20, 25, 25]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 6: heapify with a large array
+console.log("\n6. heapify with a large array");
+const largeArray = [];
+for (let i = 100; i >= 1; i--) {
+  largeArray.push(i);
+}
+minHeap.heapify(largeArray);
+console.log(
+  "Heap after heapify (first 10 elements):",
+  minHeap.heap.slice(0, 11),
+);
+console.log("Heap size:", minHeap.heap.length - 1); // Expected: 100
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 7: heapify with negative and positive integers
+console.log("\n7. heapify with negative and positive integers");
+minHeap.heapify([0, -10, 5, -20, 15, 25, -5]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null, -20, -10, -5, 15, 0, 25, 5]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 8: heapify with floating-point numbers
+console.log("\n8. heapify with floating-point numbers");
+minHeap.heapify([3.5, 2.1, 5.6, 1.2, 4.8]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null, 1.2, 2.1, 5.6, 3.5, 4.8]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 9: heapify with mixed data types (should handle only numbers)
+console.log("\n9. heapify with mixed data types");
+try {
+  minHeap.heapify([10, "20", 30, null, 50]);
+  console.log("Heap after heapify:", minHeap.print());
+  console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Depending on implementation
+} catch (error) {
+  console.log("Error:", error.message);
+}
+// Expected: Depending on implementation, could throw an error or handle strings appropriately
+
+// Test 10: heapify with all elements equal
+console.log("\n10. heapify with all elements equal");
+minHeap.heapify([10, 10, 10, 10, 10]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null, 10, 10, 10, 10, 10]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+// Test 11: heapify and then perform add and remove operations
+console.log("\n11. heapify followed by add and remove operations");
+minHeap.heapify([40, 20, 30, 10, 5, 25, 35]);
+console.log("Heap after heapify:", minHeap.print());
+// Expected: [null, 5, 10, 25, 40, 20, 30, 35]
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+minHeap.add(2);
+console.log("Heap after adding 2:", minHeap.print());
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
+
+const removedElement = minHeap.remove();
+console.log(`Removed element: ${removedElement}`); // Expected: 2
+console.log("Heap after removing 2:", minHeap.print());
+console.log("Is valid MinHeap?", isMinHeap(minHeap.heap)); // Expected: true
 
 // Test 8: Adding Large Number of Elements
 console.log("\n8. Adding Large Number of Elements");
@@ -217,3 +328,18 @@ while (propertyHeap.heap.length > 1) {
 }
 console.log("Heap after removing all elements:", propertyHeap.heap);
 // Expected Heap: [null]
+//
+//
+//
+// Create a new MinHeap instance
+
+// Test Utility Function: Verify the MinHeap property
+function isMinHeap(heap) {
+  for (let i = 1; i <= Math.floor(heap.length / 2); i++) {
+    let left = 2 * i;
+    let right = 2 * i + 1;
+    if (left < heap.length && heap[i] > heap[left]) return false;
+    if (right < heap.length && heap[i] > heap[right]) return false;
+  }
+  return true;
+}

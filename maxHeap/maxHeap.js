@@ -1,5 +1,5 @@
 var MaxHeap = function () {
-  this.heap = [null];
+  this.heap = [];
 
   this.add = function (value) {
     this.heap.push(value);
@@ -55,6 +55,38 @@ var MaxHeap = function () {
       sorted.push(this.remove());
     }
     return sorted;
+  };
+
+  this.heapifyUp = function () {
+    var index = this.heap.length - 1;
+    var parentIndex = Math.floor(index / 2);
+
+    while (this.heap[parentIndex] < this.heap[index]) {
+      var temp = this.heap[parentIndex];
+      this.heap[parentIndex] = this.heap[index];
+      this.heap[index] = temp;
+      index = parentIndex;
+      parentIndex = Math.floor(index / 2);
+    }
+  };
+
+  this.heapifyDown = function () {
+    var index = 1;
+    var leftIndex = index * 2;
+    var rightIndex = index * 2 + 1;
+    var maxIndex =
+      this.heap[leftIndex] > this.heap[rightIndex] ? leftIndex : rightIndex;
+
+    while (this.heap[index] < this.heap[maxIndex]) {
+      var temp = this.heap[index];
+      this.heap[index] = this.heap[maxIndex];
+      this.heap[maxIndex] = temp;
+      index = maxIndex;
+      leftIndex = index * 2;
+      rightIndex = index * 2 + 1;
+      maxIndex =
+        this.heap[leftIndex] > this.heap[rightIndex] ? leftIndex : rightIndex;
+    }
   };
 };
 
@@ -210,3 +242,94 @@ while (propertyHeap.heap.length > 1) {
 }
 console.log("Heap after removing all elements:", propertyHeap.print());
 // Expected Heap: [null]
+
+// Create a new MaxHeap instance
+
+console.log("=== MaxHeap heapifyUp and heapifyDown Test Cases ===");
+
+// Test 1: heapifyUp after adding a new maximum element
+console.log("\n1. heapifyUp: Adding a new maximum element");
+maxHeap.add(10);
+maxHeap.add(20);
+maxHeap.add(15);
+console.log("Heap before adding 25:", maxHeap.print());
+maxHeap.add(25); // This should trigger heapifyUp
+console.log("Heap after adding 25 (should be new root):", maxHeap.print());
+// Expected: 25 at the root, followed by 20, 15, 10
+
+// Test 2: heapifyUp when no swapping is needed
+console.log("\n2. heapifyUp: Adding an element that does not require swapping");
+maxHeap.add(5); // 5 is less than its parent 15, no heapifyUp needed
+console.log("Heap after adding 5 (no swap expected):", maxHeap.print());
+// Expected: 25, 20, 15, 10, 5
+
+// Test 3: heapifyDown after removing the root
+console.log("\n3. heapifyDown: Removing the root and heapifying down");
+const removed = maxHeap.remove(); // Remove 25
+console.log(`Removed element: ${removed}`);
+console.log("Heap after removing 25:", maxHeap.print());
+// Expected: 20 becomes the new root, followed by 10, 15, 5
+
+// Test 4: heapifyDown with multiple levels
+console.log(
+  "\n4. heapifyDown: Adding elements to create multiple levels and removing root",
+);
+maxHeap.add(30);
+maxHeap.add(40);
+maxHeap.add(35);
+console.log("Heap before removing root:", maxHeap.print());
+const removed2 = maxHeap.remove(); // Remove 40
+console.log(`Removed element: ${removed2}`);
+console.log("Heap after removing 40:", maxHeap.print());
+// Expected: 35 as new root, followed by 30, 15, 10, 5
+
+// Test 5: heapifyUp with duplicate elements
+console.log("\n5. heapifyUp: Adding duplicate elements");
+maxHeap.add(35);
+console.log("Heap after adding duplicate 35:", maxHeap.print());
+// Expected: 35 at root, with duplicate 35 correctly placed
+
+// Test 6: heapifyDown with only one child
+console.log("\n6. heapifyDown: Heapify down when there is only one child");
+const singleChildHeap = new MaxHeap();
+singleChildHeap.add(10);
+singleChildHeap.add(5);
+console.log("Single-child Heap before removing root:", singleChildHeap.print());
+const removed3 = singleChildHeap.remove(); // Remove 10
+console.log(`Removed element: ${removed3}`);
+console.log("Single-child Heap after removing 10:", singleChildHeap.print());
+// Expected: 5 at root
+
+// Test 7: heapifyUp with multiple consecutive swaps
+console.log("\n7. heapifyUp: Adding elements that require multiple swaps");
+const multiSwapHeap = new MaxHeap();
+multiSwapHeap.add(10);
+multiSwapHeap.add(20);
+multiSwapHeap.add(30);
+multiSwapHeap.add(40);
+console.log("Heap before adding 50:", multiSwapHeap.print());
+multiSwapHeap.add(50); // Should bubble up to the root
+console.log(
+  "Heap after adding 50 (should be new root):",
+  multiSwapHeap.print(),
+);
+// Expected: 50 at root, followed by 40, 30, 10, 20
+
+// Test 8: heapifyDown after replacing root with a smaller element
+console.log(
+  "\n8. heapifyDown: Manually setting root to a smaller value and heapifying down",
+);
+maxHeap.heap[1] = 1; // Manually set root to 1
+console.log("Heap after manually setting root to 1:", maxHeap.print());
+maxHeap.heapifyDown();
+console.log("Heap after heapifyDown:", maxHeap.print());
+// Expected: Heap property restored with the correct element at root
+
+// Test 9: heapifyUp after removing elements and adding new ones
+console.log("\n9. heapifyUp: Adding elements after several removals");
+maxHeap.add(50);
+maxHeap.add(60);
+console.log("Heap after adding 50 and 60:", maxHeap.print());
+maxHeap.add(55); // Should bubble up to proper position
+console.log("Heap after adding 55:", maxHeap.print());
+// Expected: 60 at root, followed by 50, 35, 10, 20, 15, 55
