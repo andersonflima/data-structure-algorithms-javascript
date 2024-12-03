@@ -12,9 +12,11 @@ A **HashTable** is a data structure that allows you to store and retrieve data i
 
    - A hash function converts a key into a numeric index within the bounds of the hash table's array.
    - Example:
+
      ```
      hash("key", size) => index
      ```
+
    - The hash table uses this index to store the value associated with the key.
 
 2. **Collisions**:
@@ -55,6 +57,68 @@ A **HashTable** is a data structure that allows you to store and retrieve data i
 ## Example Usage
 
 ```javascript
+// Initialize the HashTable
+const hash = (string, max) => {
+  let hash = 0;
+  for (let i = 0; i < string.length; i++) {
+    hash += string.charCodeAt(i);
+  }
+  return hash % max;
+};
+
+var HashTable = function () {
+  this.storage = [];
+  this.storageLimit = 4;
+
+  this.print = () => {
+    console.log(this.storage);
+  };
+
+  this.add = (key, value) => {
+    var index = hash(key, this.storageLimit);
+    if (this.storage[index] === undefined) {
+      this.storage[index] = [[key, value]];
+    } else {
+      var inserted = false;
+      for (var i = 0; i < this.storage[index].length; i++) {
+        if (this.storage[index][i][0] === key) {
+          this.storage[index][i][1] = value;
+          inserted = true;
+        }
+      }
+      if (inserted === false) {
+        this.storage[index].push([key, value]);
+      }
+    }
+  };
+
+  this.remove = (key) => {
+    var index = hash(key, this.storageLimit);
+    if (this.storage[index].length === 1 && this.storage[index][0][0] === key) {
+      delete this.storage[index];
+    } else {
+      for (var i = 0; i < this.storage[index]; i++) {
+        if (this.storage[index][i][0] === key) {
+          delete this.storage[index][i];
+        }
+      }
+    }
+  };
+
+  this.lookup = (key) => {
+    var index = hash(key, this.storageLimit);
+    if (this.storage[index] === undefined) {
+      return undefined;
+    } else {
+      for (var i = 0; i < this.storage[index].length; i++) {
+        if (this.storage[index][i][0] === key) {
+          return this.storage[index][i][1];
+        }
+      }
+    }
+  };
+};
+
 // Initialize the HashTable
 const ht = new HashTable();
 

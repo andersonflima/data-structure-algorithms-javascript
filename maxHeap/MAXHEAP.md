@@ -64,6 +64,99 @@ Below is the complete implementation of the **MaxHeap** class in JavaScript:
 
 ```javascript
 // Create a new MaxHeap instance
+var MaxHeap = function () {
+  this.heap = [];
+
+  this.add = function (value) {
+    this.heap.push(value);
+    var index = this.heap.length - 1;
+    var parentIndex = Math.floor(index / 2);
+
+    while (this.heap[parentIndex] < this.heap[index]) {
+      var temp = this.heap[parentIndex];
+      this.heap[parentIndex] = this.heap[index];
+      this.heap[index] = temp;
+      index = parentIndex;
+      parentIndex = Math.floor(index / 2);
+    }
+  };
+
+  this.remove = function () {
+    if (this.heap.length === 1) {
+      return null;
+    }
+    if (this.heap.length === 2) {
+      return this.heap.pop();
+    }
+
+    var max = this.heap[1];
+    this.heap[1] = this.heap.pop();
+    var index = 1;
+    var leftIndex = index * 2;
+    var rightIndex = index * 2 + 1;
+    var maxIndex =
+      this.heap[leftIndex] > this.heap[rightIndex] ? leftIndex : rightIndex;
+
+    while (this.heap[index] < this.heap[maxIndex]) {
+      var temp = this.heap[index];
+      this.heap[index] = this.heap[maxIndex];
+      this.heap[maxIndex] = temp;
+      index = maxIndex;
+      leftIndex = index * 2;
+      rightIndex = index * 2 + 1;
+      maxIndex =
+        this.heap[leftIndex] > this.heap[rightIndex] ? leftIndex : rightIndex;
+    }
+
+    return max;
+  };
+
+  this.print = function () {
+    return this.heap;
+  };
+
+  this.sort = function () {
+    var sorted = [];
+    while (this.heap.length > 1) {
+      sorted.push(this.remove());
+    }
+    return sorted;
+  };
+
+  this.heapifyUp = function () {
+    var index = this.heap.length - 1;
+    var parentIndex = Math.floor(index / 2);
+
+    while (this.heap[parentIndex] < this.heap[index]) {
+      var temp = this.heap[parentIndex];
+      this.heap[parentIndex] = this.heap[index];
+      this.heap[index] = temp;
+      index = parentIndex;
+      parentIndex = Math.floor(index / 2);
+    }
+  };
+
+  this.heapifyDown = function () {
+    var index = 1;
+    var leftIndex = index * 2;
+    var rightIndex = index * 2 + 1;
+    var maxIndex =
+      this.heap[leftIndex] > this.heap[rightIndex] ? leftIndex : rightIndex;
+
+    while (this.heap[index] < this.heap[maxIndex]) {
+      var temp = this.heap[index];
+      this.heap[index] = this.heap[maxIndex];
+      this.heap[maxIndex] = temp;
+      index = maxIndex;
+      leftIndex = index * 2;
+      rightIndex = index * 2 + 1;
+      maxIndex =
+        this.heap[leftIndex] > this.heap[rightIndex] ? leftIndex : rightIndex;
+    }
+  };
+};
+
+// Create a new MaxHeap instance
 const maxHeap = new MaxHeap();
 
 console.log("=== MaxHeap Test Cases ===");
@@ -306,5 +399,4 @@ console.log("Heap after adding 50 and 60:", maxHeap.print());
 maxHeap.add(55); // Should bubble up to proper position
 console.log("Heap after adding 55:", maxHeap.print());
 // Expected: 60 at root, followed by 50, 35, 10, 20, 15, 55
-// Expected Heap: [null]
 ```

@@ -19,6 +19,7 @@ Unlike arrays, linked lists do not store elements in contiguous memory locations
 
    - A basic unit of a linked list containing an `element` and a `next` pointer.
    - Example:
+
      ```javascript
      class Node {
        constructor(element, next = null) {
@@ -77,6 +78,159 @@ Adds a new element to the end of the list.
 - **Example**:
 
 ```javascript
+// Initialize the LinkedList class
+var Node = function (element) {
+  this.element = element;
+  this.next = null;
+};
+
+var LinkedList = function () {
+  this.length = 0;
+  this.head = null;
+
+  this.size = () => {
+    return this.length;
+  };
+
+  this.head = () => {
+    return this.head;
+  };
+
+  this.add = (element) => {
+    const node = new Node(element);
+
+    if (this.head === null) {
+      this.head = node;
+    } else {
+      let currentNode = this.head;
+      while (currentNode.next) {
+        currentNode = currentNode.next;
+      }
+      currentNode.next = node;
+    }
+    this.length++;
+  };
+
+  this.remove = (element) => {
+    if (!this.head) {
+      return;
+    }
+
+    let currentNode = this.head;
+    let previousNode = null;
+
+    if (currentNode.element === element) {
+      this.head = currentNode.next;
+      this.length--;
+      return;
+    }
+
+    while (currentNode && currentNode.element !== element) {
+      previousNode = currentNode;
+      currentNode = currentNode.next;
+    }
+
+    if (!currentNode) {
+      return;
+    }
+
+    previousNode.next = currentNode.next;
+    this.length--;
+  };
+
+  this.isEmpty = () => {
+    return this.length === 0;
+  };
+
+  this.indexOf = (element) => {
+    var currentNode = this.head;
+    var index = -1;
+    while (currentNode) {
+      index++;
+      if (currentNode.element === element) {
+        return index;
+      }
+      currentNode = currentNode.next;
+    }
+    return -1;
+  };
+
+  this.find = (item) => {
+    var currentNode = this.head;
+    while (currentNode) {
+      if (currentNode.element === item) {
+        return currentNode;
+      }
+      currentNode = currentNode.next;
+    }
+    return null;
+  };
+
+  this.has = (element) => {
+    return this.indexOf(element) !== -1;
+  };
+
+  this.addAt = (index, element) => {
+    if (index < 0 || index > this.length) {
+      return false;
+    }
+
+    const node = new Node(element);
+    let currentNode = this.head;
+    let previousNode = null;
+    let currentIndex = 0;
+
+    if (index === 0) {
+      node.next = currentNode;
+      this.head = node;
+    } else {
+      while (currentIndex < index) {
+        previousNode = currentNode;
+        currentNode = currentNode.next;
+        currentIndex++;
+      }
+      node.next = currentNode;
+      previousNode.next = node;
+    }
+    this.length++;
+  };
+
+  this.removeAt = (index) => {
+    if (index < 0 || index >= this.length) {
+      console.log("Index out of bounds");
+      return null;
+    }
+
+    let currentNode = this.head;
+    let previousNode = null;
+    let currentIndex = 0;
+
+    if (index === 0) {
+      this.head = currentNode.next;
+    } else {
+      while (currentIndex < index) {
+        previousNode = currentNode;
+        currentNode = currentNode.next;
+        currentIndex++;
+      }
+      previousNode.next = currentNode.next;
+    }
+
+    this.length--;
+    return currentNode.element;
+  };
+
+  this.toString = () => {
+    var currentNode = this.head;
+    var result = [];
+    while (currentNode) {
+      currentNode.element && result.push(currentNode.element);
+      currentNode = currentNode.next;
+    }
+    return result.join(" -> ");
+  };
+};
+
 // Initialize the LinkedList class
 const linkedList = new LinkedList();
 

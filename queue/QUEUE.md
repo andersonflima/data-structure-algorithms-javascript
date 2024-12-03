@@ -39,9 +39,38 @@ This repository contains a custom implementation of the `Queue` data structure i
 
 ## Usage Example
 
-Here�s how you can use the `Queue` implementation:
+Here&apos;s how you can use the `Queue` implementation:
 
 ```javascript
+// Create a new Queue instance
+var Queue = function () {
+  this.collection = new Array();
+
+  this.print = () => {
+    console.log(this.collection);
+  };
+
+  this.enqueue = (element) => {
+    this.collection.push(element);
+  };
+
+  this.dequeue = () => {
+    return this.collection.shift();
+  };
+
+  this.front = () => {
+    return this.collection[0];
+  };
+
+  this.size = () => {
+    return this.collection.length;
+  };
+
+  this.isEmpty = () => {
+    return this.collection.length === 0;
+  };
+};
+
 // Create a new Queue instance
 var queue = new Queue();
 

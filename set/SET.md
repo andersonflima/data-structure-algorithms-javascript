@@ -55,9 +55,87 @@ This repository contains a custom implementation of the `Set` data structure in 
 
 ## Usage Example
 
-Here�s how you can use the `Set` implementation:
+Here&apos;s how you can use the `Set` implementation:
 
 ```javascript
+// Create two sets
+var Set = function () {
+  this.items = new Map();
+
+  this.has = (value) => {
+    return this.items.has(value);
+  };
+
+  this.add = (value) => {
+    if (!this.has(value)) {
+      this.items.set(value, value);
+      return true;
+    }
+    return false;
+  };
+
+  this.remove = (value) => {
+    if (this.has(value)) {
+      this.items.delete(value);
+      return true;
+    }
+    return false;
+  };
+
+  this.size = () => {
+    return this.items.size;
+  };
+
+  this.union = (otherSet) => {
+    const unionSet = new Set();
+    this.items.forEach((value) => {
+      unionSet.add(value);
+    });
+    otherSet.items.forEach((value) => {
+      unionSet.add(value);
+    });
+    return unionSet;
+  };
+
+  this.intersection = (otherSet) => {
+    const intersectionSet = new Set();
+    this.items.forEach((value) => {
+      if (otherSet.has(value)) {
+        intersectionSet.add(value);
+      }
+    });
+    return intersectionSet;
+  };
+
+  this.difference = (otherSet) => {
+    const differenceSet = new Set();
+    this.items.forEach((value) => {
+      if (!otherSet.has(value)) {
+        differenceSet.add(value);
+      }
+    });
+    return differenceSet;
+  };
+
+  this.subset = (otherSet) => {
+    if (this.size() > otherSet.size()) {
+      return false;
+    } else {
+      let isSubset = true;
+      this.items.forEach((value) => {
+        if (!otherSet.has(value)) {
+          isSubset = false;
+        }
+      });
+      return isSubset;
+    }
+  };
+
+  this.values = () => {
+    return Array.from(this.items.values());
+  };
+};
+
 // Create two sets
 const setA = new Set();
 const setB = new Set();
