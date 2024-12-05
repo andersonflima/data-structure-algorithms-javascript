@@ -1,7 +1,7 @@
 function quickSort(arr) {
   if (arr.length < 2) return arr;
 
-  let pivot = arr[0];
+  pivot = arr[Math.floor(arr.length / 2)];
   let less = new Array();
   let greater = new Array();
 
@@ -28,7 +28,7 @@ console.log(quickSort(b)); // Output should be [5, 7, 23, 32, 34, 62]
 let c = [-3, -1, 2, 1, -5];
 console.log(quickSort(c)); // Output should be [-5, -3, -1, 1, 2]
 
-// Case 4: An array that includes duplicate elements
+// Case 4: An arraylthat includes duplicate elements
 let d = [4, 1, 3, 4, 2, 3];
 console.log(quickSort(d)); // Output should be [1, 2, 3, 3, 4, 4]
 
