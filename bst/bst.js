@@ -122,6 +122,7 @@ class BST {
 
     return result;
   }
+
   preOrder(node = this.root, result = []) {
     if (node === null) {
       return result;
@@ -140,7 +141,6 @@ class BST {
     if (node === null) {
       return result;
     }
-
     this.postOrder(node.left, result);
 
     this.postOrder(node.right, result);
@@ -177,8 +177,8 @@ class BST {
           queue.push(node.right);
         }
       }
-      return result;
     }
+    return result;
   }
 
   findMinHeight(node = this.root) {
