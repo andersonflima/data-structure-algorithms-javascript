@@ -1,7 +1,7 @@
 function quickSort(arr) {
   if (arr.length < 2) return arr;
 
-  pivot = arr[Math.floor(arr.length / 2)];
+  var pivot = arr[0];
   let less = new Array();
   let greater = new Array();
 
