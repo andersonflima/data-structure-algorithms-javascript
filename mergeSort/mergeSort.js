@@ -5,7 +5,6 @@ var mergeSort = function (array) {
   var middle = Math.floor(array.length / 2);
   var left = array.slice(0, middle);
   var right = array.slice(middle);
-  console.log(left, right);
   return merge(mergeSort(left), mergeSort(right));
 };
 
